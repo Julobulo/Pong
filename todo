@@ -1,0 +1,3 @@
+-> Two boards that go up/down, and switch direction when their respective key is hit
+-> A ball that goes in a random direction at the start of the point, that goes faster and faster when it hits a board, and when it does, also changes direction
+-> A scoring system consisting of two counter on both sides
