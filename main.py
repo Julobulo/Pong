@@ -12,11 +12,13 @@ from pygame.locals import (
 
 pygame.init()
 
+global screensize
+screensize = (1400, 800)
 running = True
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((1400, 800))
+screen = pygame.display.set_mode(screensize)
 background = pygame.image.load(os.path.join('images', 'background.jpg'))
-background = pygame.transform.scale(background, (1400, 800))
+background = pygame.transform.scale(background, screensize)
 
 def update():
         global running
@@ -35,11 +37,37 @@ def update():
 def display():
         screen.blit(background, (0, 0))
 
+class Player(pygame.sprite.Sprite):
+    def __init__(self, x: int, y: int, dir: int):
+        self.x = x
+        self.y = y
+        self.dir = dir
+        self.size = (x, y)
+        self.color = "black"
+        self.image = pygame.Surface(self.size)
+        self.rect = self.image.get_rect()
+        self.dir = dir
+    def update(self):
+        dx, dy = self.dir
+        self.rect.x += dx
+        self.rect.y += dy
+    def draw (self):
+        pygame.draw.rect(screen, self.color, self.rect)
+
+player1 = Player(10, 150, (0, 4))
+# all_sprites = pygame.sprite.Group()
+# all_sprites.add(player1)
+
 while running:
     update()
     display()
+    player1.update()
+    player1.draw()
+    # all_sprites.update()
+    # all_sprites.draw(screen)
     
     clock.tick(30) # make game slow until it reaches 30 fps
+    
     
     pygame.display.set_caption(str(round(clock.get_fps()))) # set the name of the pygame window to the number of fps
     pygame.display.flip() # Flip the display SUPER IMPORTANT, renders the screen
