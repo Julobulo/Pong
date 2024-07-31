@@ -48,13 +48,15 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.dir = dir
     def update(self):
+        if self.rect.y + self.dir[1] + self.size[1] > screensize[1] or self.rect.y + self.dir[1] < 0:
+            self.dir = (self.dir[0], self.dir[1])
         dx, dy = self.dir
         self.rect.x += dx
         self.rect.y += dy
     def draw (self):
         pygame.draw.rect(screen, self.color, self.rect)
 
-player1 = Player(10, 150, (0, 4))
+player1 = Player(10, 150, (0, 8))
 # all_sprites = pygame.sprite.Group()
 # all_sprites.add(player1)
 
