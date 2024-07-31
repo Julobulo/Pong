@@ -19,7 +19,7 @@ global playersize
 playersize = (10, 150)
 global ballsize
 ballsize = (10, 10)
-ball_coef = 1.5
+ball_coef = 1.1
 running = True
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(screensize)
@@ -85,6 +85,8 @@ class Ball(pygame.sprite.Sprite):
     def update(self):
         if self.rect.y + self.dir[1] + self.size[1] > screensize[1] or self.rect.y + self.dir[1] < 0:
             self.dir = (ball_coef*self.dir[0], -ball_coef*self.dir[1])
+        if self.rect.x + self.dir[0] + self.size[0] + ballsize[0] > screensize[0] or self.rect.x + self.dir[0] - ballsize[0] < 0:
+            self.dir = (-ball_coef*self.dir[0], ball_coef*self.dir[1])
         dx, dy = self.dir
         self.rect.x += dx
         self.rect.y += dy
