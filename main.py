@@ -15,6 +15,8 @@ pygame.init()
 
 global screensize
 screensize = (1400, 800)
+global playersize
+playersize = (10, 150)
 running = True
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(screensize)
@@ -43,7 +45,7 @@ class Player(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         self.dir = dir
-        self.size = (10, 150)
+        self.size = playersize
         self.color = "black"
         self.key = key
         self.image = pygame.Surface(self.size)
@@ -84,7 +86,7 @@ class Ball(pygame.sprite.Sprite):
         pygame.draw.rect(screen, self.color, self.rect)
 
 player1 = Player(0, 0, (0, 8), K_a)
-player2 = Player(screensize[0]-10, 0, (0, 8), K_p)
+player2 = Player(screensize[0]-playersize[0], 0, (0, 8), K_p)
 ball = Ball(screensize[0]/2, screensize[1]/2, 4)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player1)
