@@ -1,4 +1,5 @@
-import pygame, os
+import pygame, os, math
+from random import randint, choice
 
 from pygame.locals import (
     K_ESCAPE,
@@ -63,11 +64,32 @@ class Player(pygame.sprite.Sprite):
     def display(self):
         pygame.draw.rect(screen, self.color, self.rect)
 
+class Ball(pygame.sprite.Sprite):
+    def __init__(self, x: int, y: int, speed: int):
+        pygame.sprite.Sprite.__init__(self)
+        self.color = "white"
+        self.image = pygame.Surface((10, 10))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.speed = speed
+        angle_deg = randint(45, 135) # Random direction between 45 and 135 degrees
+        self.dir = (speed * math.cos(angle_deg), speed * math.sin(angle_deg))
+        self.dir = (self.dir[0] * choice([1, -1]), self.dir[1] * choice([1, -1])) # Apply a random sign to the x and y directions
+    def update(self):
+        dx, dy = self.dir
+        self.rect.x += dx
+        self.rect.y += dy
+    def display(self):
+        pygame.draw.rect(screen, self.color, self.rect)
+
 player1 = Player(0, 0, (0, 8), K_a)
 player2 = Player(screensize[0]-10, 0, (0, 8), K_p)
+ball = Ball(screensize[0]/2, screensize[1]/2, 4)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player1)
 all_sprites.add(player2)
+all_sprites.add(ball)
 
 while running:
     events = pygame.event.get()
