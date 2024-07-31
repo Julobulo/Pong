@@ -17,6 +17,8 @@ global screensize
 screensize = (1400, 800)
 global playersize
 playersize = (10, 150)
+global ballsize
+ballsize = (10, 10)
 running = True
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(screensize)
@@ -70,7 +72,8 @@ class Ball(pygame.sprite.Sprite):
     def __init__(self, x: int, y: int, speed: int):
         pygame.sprite.Sprite.__init__(self)
         self.color = "white"
-        self.image = pygame.Surface((10, 10))
+        self.size = ballsize
+        self.image = pygame.Surface(self.size)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -79,6 +82,8 @@ class Ball(pygame.sprite.Sprite):
         self.dir = (speed * math.cos(angle_deg), speed * math.sin(angle_deg))
         self.dir = (self.dir[0] * choice([1, -1]), self.dir[1] * choice([1, -1])) # Apply a random sign to the x and y directions
     def update(self):
+        if self.rect.y + self.dir[1] + self.size[1] > screensize[1] or self.rect.y + self.dir[1] < 0:
+            self.dir = (self.dir[0], -self.dir[1])
         dx, dy = self.dir
         self.rect.x += dx
         self.rect.y += dy
