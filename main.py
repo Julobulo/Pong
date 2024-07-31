@@ -22,7 +22,6 @@ background = pygame.transform.scale(background, screensize)
 
 def update():
         global running
-        events = pygame.event.get()
         # Look at every event in the queue
         for event in events:
             # Did the user hit a key?
@@ -38,29 +37,35 @@ def display():
         screen.blit(background, (0, 0))
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, dir: int):
+    def __init__(self, x: int, y: int, dir: int, key):
         self.x = x
         self.y = y
         self.dir = dir
         self.size = (x, y)
         self.color = "black"
+        self.key = key
         self.image = pygame.Surface(self.size)
         self.rect = self.image.get_rect()
         self.dir = dir
     def update(self):
+        for event in events:
+            if event.type == KEYDOWN:
+                if event.key == self.key:
+                    self.dir = (self.dir[0], -self.dir[1])
         if self.rect.y + self.dir[1] + self.size[1] > screensize[1] or self.rect.y + self.dir[1] < 0:
-            self.dir = (self.dir[0], self.dir[1])
+            self.dir = (self.dir[0], -self.dir[1])
         dx, dy = self.dir
         self.rect.x += dx
         self.rect.y += dy
     def draw (self):
         pygame.draw.rect(screen, self.color, self.rect)
 
-player1 = Player(10, 150, (0, 8))
+player1 = Player(10, 150, (0, 8), K_a)
 # all_sprites = pygame.sprite.Group()
 # all_sprites.add(player1)
 
 while running:
+    events = pygame.event.get()
     update()
     display()
     player1.update()
