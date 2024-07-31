@@ -38,14 +38,17 @@ def display():
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x: int, y: int, dir: int, key):
+        pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
         self.dir = dir
-        self.size = (x, y)
+        self.size = (10, 150)
         self.color = "black"
         self.key = key
         self.image = pygame.Surface(self.size)
         self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
         self.dir = dir
     def update(self):
         for event in events:
@@ -57,21 +60,22 @@ class Player(pygame.sprite.Sprite):
         dx, dy = self.dir
         self.rect.x += dx
         self.rect.y += dy
-    def draw (self):
+    def display(self):
         pygame.draw.rect(screen, self.color, self.rect)
 
-player1 = Player(10, 150, (0, 8), K_a)
-# all_sprites = pygame.sprite.Group()
-# all_sprites.add(player1)
+player1 = Player(0, 0, (0, 8), K_a)
+player2 = Player(screensize[0]-10, 0, (0, 8), K_p)
+all_sprites = pygame.sprite.Group()
+all_sprites.add(player1)
+all_sprites.add(player2)
 
 while running:
     events = pygame.event.get()
     update()
     display()
-    player1.update()
-    player1.draw()
-    # all_sprites.update()
-    # all_sprites.draw(screen)
+    all_sprites.update()
+    for sprite in all_sprites:
+        sprite.display()
     
     clock.tick(30) # make game slow until it reaches 30 fps
     
