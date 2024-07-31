@@ -86,6 +86,16 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.y + self.dir[1] + self.size[1] > screensize[1] or self.rect.y + self.dir[1] < 0:
             self.dir = (ball_coef*self.dir[0], -ball_coef*self.dir[1])
         if self.rect.x + self.dir[0] + self.size[0] + ballsize[0] > screensize[0] or self.rect.x + self.dir[0] - ballsize[0] < 0:
+            if self.rect.x < screensize[0]/2: # left player is concerned
+                if self.rect.y - self.size[1] > player1.rect.y and self.rect.y < player1.rect.y + player1.size[1]:
+                    print('player1 got the ball!')
+                else:
+                    print('player1 didn\'t get the ball...')
+            else: # right player is concerned
+                if self.rect.y - self.size[1] > player2.rect.y and self.rect.y < player2.rect.y + player2.size[1]:
+                    print('player2 got the ball!')
+                else:
+                    print('player2 didn\'t get the ball...')
             self.dir = (-ball_coef*self.dir[0], ball_coef*self.dir[1])
         dx, dy = self.dir
         self.rect.x += dx
