@@ -1,5 +1,5 @@
 import pygame, os, math
-from random import randint, choice
+from random import randint, choice, uniform
 
 from pygame.locals import (
     K_ESCAPE,
@@ -35,6 +35,8 @@ def update():
                 # Was it the Escape key? If so, stop the loop.
                 if event.key == K_ESCAPE:
                     running = False
+                if event.key == K_w:
+                    ball.reset()
             # Did the user click the window close button? If so, stop the loop.
             elif event.type == QUIT:
                 running = False
@@ -79,9 +81,17 @@ class Ball(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.speed = speed
-        angle_deg = randint(45, 135) # Random direction between 45 and 135 degrees
-        self.dir = (speed * math.cos(angle_deg), speed * math.sin(angle_deg))
-        self.dir = (self.dir[0] * choice([1, -1]), self.dir[1] * choice([1, -1])) # Apply a random sign to the x and y directions
+        self.initial_speed = speed
+        self.reset()
+    def reset(self):
+        # reset pos
+        self.rect.x = screensize[0]/2
+        self.rect.y = screensize[1]/2
+        # reset dir
+        angle = uniform(0.3, 1.3)
+        self.dir = (self.initial_speed * math.cos(angle), self.initial_speed * math.sin(angle))
+        self.dir = (self.dir[0] * choice([1, -1]), self.dir[1] * choice([1, -1]))
+        print(f'resetting, angle: {angle}, cos(angle): {math.cos(angle)}, sin(angle): {math.sin(angle)}, self.dir[0]: {self.dir[0]}, self.dir[1]: {self.dir[1]}')
     def update(self):
         if self.rect.y + self.dir[1] + self.size[1] > screensize[1] or self.rect.y + self.dir[1] < 0:
             self.dir = (ball_coef*self.dir[0], -ball_coef*self.dir[1])
@@ -91,11 +101,13 @@ class Ball(pygame.sprite.Sprite):
                     print('player1 got the ball!')
                 else:
                     print('player1 didn\'t get the ball...')
+                    self.reset()
             else: # right player is concerned
                 if self.rect.y - self.size[1] > player2.rect.y and self.rect.y < player2.rect.y + player2.size[1]:
                     print('player2 got the ball!')
                 else:
                     print('player2 didn\'t get the ball...')
+                    self.reset()
             self.dir = (-ball_coef*self.dir[0], ball_coef*self.dir[1])
         dx, dy = self.dir
         self.rect.x += dx
