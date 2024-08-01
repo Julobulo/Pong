@@ -25,7 +25,7 @@ ball_coef = 1.1
 running = True
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(screensize)
-background = pygame.image.load(os.path.join('images', 'background.jpg'))
+background = pygame.image.load(os.path.join('images', 'background.png'))
 background = pygame.transform.scale(background, screensize)
 
 pygame.font.init()
@@ -56,8 +56,8 @@ class Player(pygame.sprite.Sprite):
         self.y = y
         self.dir = dir
         self.size = playersize
-        self.color = "black"
-        self.scoreTextList = [scoreFont.render(str(score), False, (0, 0, 0)) for score in range(0, max_score+1)]
+        self.color = "white"
+        self.scoreTextList = [scoreFont.render(str(score), False, self.color) for score in range(0, max_score+1)]
         self.key = key
         self.score = 0
         self.image = pygame.Surface(self.size)
