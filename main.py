@@ -74,8 +74,11 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += dx
         self.rect.y += dy
     def display(self):
+        if self.x < screensize[0] / 2: # player1
+            screen.blit(self.scoreTextList[self.score], (screensize[0]/4, screensize[1]/16))
+        else: # player2
+            screen.blit(self.scoreTextList[self.score], (screensize[0]/4 + screensize[0]/2, screensize[1]/16))
         pygame.draw.rect(screen, self.color, self.rect)
-        screen.blit(self.scoreTextList[self.score], (screensize[0]/4, screensize[1]/16))
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self, x: int, y: int, speed: int):
