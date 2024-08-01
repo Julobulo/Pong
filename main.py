@@ -26,6 +26,9 @@ screen = pygame.display.set_mode(screensize)
 background = pygame.image.load(os.path.join('images', 'background.jpg'))
 background = pygame.transform.scale(background, screensize)
 
+pygame.font.init()
+scoreFont = pygame.font.SysFont('Comic Sans MS', math.floor(screensize[1]/8))
+
 def update():
         global running
         # Look at every event in the queue
@@ -52,6 +55,7 @@ class Player(pygame.sprite.Sprite):
         self.dir = dir
         self.size = playersize
         self.color = "black"
+        self.scoreTextList = [scoreFont.render(str(score), False, (0, 0, 0)) for score in range(0, 10)]
         self.key = key
         self.score = 0
         self.image = pygame.Surface(self.size)
@@ -71,6 +75,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += dy
     def display(self):
         pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.scoreTextList[self.score], (screensize[0]/4, screensize[1]/16))
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self, x: int, y: int, speed: int):
