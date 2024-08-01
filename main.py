@@ -53,6 +53,7 @@ class Player(pygame.sprite.Sprite):
         self.size = playersize
         self.color = "black"
         self.key = key
+        self.score = 0
         self.image = pygame.Surface(self.size)
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -91,7 +92,7 @@ class Ball(pygame.sprite.Sprite):
         angle = uniform(0.3, 1.3)
         self.dir = (self.initial_speed * math.cos(angle), self.initial_speed * math.sin(angle))
         self.dir = (self.dir[0] * choice([1, -1]), self.dir[1] * choice([1, -1]))
-        print(f'resetting, angle: {angle}, cos(angle): {math.cos(angle)}, sin(angle): {math.sin(angle)}, self.dir[0]: {self.dir[0]}, self.dir[1]: {self.dir[1]}')
+        print(f'scores: Player1: {player1.score}, Player2: {player2.score}')
     def update(self):
         if self.rect.y + self.dir[1] + self.size[1] > screensize[1] or self.rect.y + self.dir[1] < 0:
             self.dir = (ball_coef*self.dir[0], -ball_coef*self.dir[1])
@@ -101,12 +102,14 @@ class Ball(pygame.sprite.Sprite):
                     print('player1 got the ball!')
                 else:
                     print('player1 didn\'t get the ball...')
+                    player2.score += 1
                     self.reset()
             else: # right player is concerned
                 if self.rect.y - self.size[1] > player2.rect.y and self.rect.y < player2.rect.y + player2.size[1]:
                     print('player2 got the ball!')
                 else:
                     print('player2 didn\'t get the ball...')
+                    player1.score += 1
                     self.reset()
             self.dir = (-ball_coef*self.dir[0], ball_coef*self.dir[1])
         dx, dy = self.dir
@@ -115,9 +118,9 @@ class Ball(pygame.sprite.Sprite):
     def display(self):
         pygame.draw.rect(screen, self.color, self.rect)
 
-player1 = Player(0, 0, (0, 8), K_a)
-player2 = Player(screensize[0]-playersize[0], 0, (0, 8), K_p)
-ball = Ball(screensize[0]/2, screensize[1]/2, 4)
+player1 = Player(0, 0, (0, 4), K_a)
+player2 = Player(screensize[0]-playersize[0], 0, (0, 4), K_p)
+ball = Ball(screensize[0]/2, screensize[1]/2, 2)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player1)
 all_sprites.add(player2)
@@ -131,7 +134,7 @@ while running:
     for sprite in all_sprites:
         sprite.display()
     
-    clock.tick(30) # make game slow until it reaches 30 fps
+    clock.tick(60) # make game slow until it reaches 30 fps
     
     
     pygame.display.set_caption(str(round(clock.get_fps()))) # set the name of the pygame window to the number of fps
