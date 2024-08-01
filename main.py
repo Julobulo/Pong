@@ -19,6 +19,8 @@ global playersize
 playersize = (10, 150)
 global ballsize
 ballsize = (10, 10)
+global max_score
+max_score = 3
 ball_coef = 1.1
 running = True
 clock = pygame.time.Clock()
@@ -55,7 +57,7 @@ class Player(pygame.sprite.Sprite):
         self.dir = dir
         self.size = playersize
         self.color = "black"
-        self.scoreTextList = [scoreFont.render(str(score), False, (0, 0, 0)) for score in range(0, 10)]
+        self.scoreTextList = [scoreFont.render(str(score), False, (0, 0, 0)) for score in range(0, max_score+1)]
         self.key = key
         self.score = 0
         self.image = pygame.Surface(self.size)
@@ -139,6 +141,9 @@ while running:
     update()
     display()
     all_sprites.update()
+    if player1.score > max_score or player2.score > max_score:
+        print(f'player{'1' if player1.score > max_score else '2'} won!')
+        exit(0)
     for sprite in all_sprites:
         sprite.display()
     
